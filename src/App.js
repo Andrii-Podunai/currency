@@ -1,74 +1,77 @@
-import './App.css';
-import CurrencyInput from "./CurrencyInput";
-import {useState, useEffect} from "react";
+import InputCurrencies from "./InputCurrencies";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import Header from './header/Header';
 
 function App() {
-
-  const [amount1, setAmount1] = useState(1);
-  const [amount2, setAmount2] = useState(1);
   const [currency1, setCurrency1] = useState('USD');
-  const [currency2, setCurrency2] = useState('EUR');
-  const [rates, setRates] = useState([]);
+  const [currency2, setCurrency2] = useState('UAH');
+  const [number1, setNumber1] = useState(1);
+  const [number2, setNumber2] = useState(1);
+  const [currenciesData, setcurrenciesData] = useState([]);
+
+  const key = 'MhFzIWilwKH0JQxB9ELCx2i0RmhHAsW3'
 
   useEffect(() => {
-    axios.get('https://api.apilayer.com/fixer/latest?base=USD&apikey=8El09v1tgPaDSKNR0TGCUrzqXBE6AdDI')
-      .then(response => {
-        setRates(response.data.rates);
+    axios.get(`https://api.apilayer.com/fixer/latest?base=USD&apikey=${key}`)
+      .then(res => {
+        setcurrenciesData(res.data.rates);
       })
   }, []);
 
   useEffect(() => {
-    if (!!rates) {
-      function init() {
-        handleAmount1Change(1);
+    if (!!currenciesData) {
+      function start() {
+        changeNumber1(1);
       }
-      init();
+      start();
     }
-  }, [rates]);
+  }, [currenciesData]);
 
 
 
-  function format(number) {
-    return number.toFixed(4);
+  const numFixed = (number) => {
+    return number.toFixed(3);
   }
 
-  function handleAmount1Change(amount1) {
-    setAmount2(format(amount1 * rates[currency2] / rates[currency1]));
-    setAmount1(amount1);
+  const changeNumber1 = (number1) => {
+    setNumber2(numFixed(number1 * currenciesData[currency2] / currenciesData[currency1]));
+    setNumber1(number1);
   }
 
-  function handleCurrency1Change(currency1) {
-    setAmount2(format(amount1 * rates[currency2] / rates[currency1]));
+  const changeNumber2 = (number2) => {
+    setNumber1(numFixed(number2 * currenciesData[currency1] / currenciesData[currency2]));
+    setNumber2(number2);
+  }
+
+  const changeCurrency1 = (currency1) => {
+    setNumber2(numFixed(number1 * currenciesData[currency2] / currenciesData[currency1]));
     setCurrency1(currency1);
   }
 
-  function handleAmount2Change(amount2) {
-    setAmount1(format(amount2 * rates[currency1] / rates[currency2]));
-    setAmount2(amount2);
-  }
-
-  function handleCurrency2Change(currency2) {
-    setAmount1(format(amount2 * rates[currency1] / rates[currency2]));
+  const changeCurrency2 = (currency2) => {
+    setNumber1(numFixed(number2 * currenciesData[currency1] / currenciesData[currency2]));
     setCurrency2(currency2);
   }
 
-
   return (
     <div>
-      <h1>Currency Converter</h1>
-      <CurrencyInput
-        onAmountChange={handleAmount1Change}
-        onCurrencyChange={handleCurrency1Change}
-        currencies={Object.keys(rates)}
-        amount={amount1}
-        currency={currency1} />
-      <CurrencyInput
-        onAmountChange={handleAmount2Change}
-        onCurrencyChange={handleCurrency2Change}
-        currencies={Object.keys(rates)}
-        amount={amount2}
-        currency={currency2} />
+      <Header numFixed={numFixed} currenciesData={currenciesData} />
+      <h2 className='header__title' >Конвертер валют</h2>
+      <div className="main__group">
+        <InputCurrencies
+          changeNumber={changeNumber1}
+          changeCurrency={changeCurrency1}
+          currencies={Object.keys(currenciesData)}
+          number={number1}
+          currency={currency1} />
+        <InputCurrencies
+          changeNumber={changeNumber2}
+          changeCurrency={changeCurrency2}
+          currencies={Object.keys(currenciesData)}
+          number={number2}
+          currency={currency2} />
+      </div>
     </div>
   );
 }

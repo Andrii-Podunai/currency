@@ -1,0 +1,29 @@
+.main{
+    background: #ffe4c4;
+    width: 190px;
+    display: grid;
+    grid-template-columns: 100px 80px;
+    border-radius: 5px;
+    color: black;
+}
+.main__input{
+    padding-left: 10px;
+}
+.main__select{
+    padding: 15px;
+}
+.main__input,.main__select{
+    background: none;
+    border:0;
+    color: black;
+}
+.header__title {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.main__group {
+    gap: 30px;
+    display: flex;
+justify-content: center;
+}

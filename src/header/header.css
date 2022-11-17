@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header__currencies-inner {
+    height: 21px;
+}
+.header__currencies {
+    display: flex;
+    gap: 30px;
+}
+.header__currencies-inner {
+    text-align: center;
+    background-color: bisque;
+    padding: 15px;
+    width: 100px;
+    border-radius: 20px;
+}
