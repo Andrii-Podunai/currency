@@ -1,6 +1,16 @@
 import './inputCurrencies.css';
+import React from 'react';
 
-function InputCurrencies({ number, currency, currencies, changeNumber, changeCurrency, }) {
+interface CounterProps {
+  number: number | string;
+  currency: string;
+  currencies: Array<number | string>;
+  changeNumber: any;
+  changeCurrency: (currenci: string) => void;
+}
+
+
+function InputCurrencies({ number, currency, currencies, changeNumber, changeCurrency, }: CounterProps) {
   return (
     <div className="main">
       <input className='main__input' type="text" value={number == 'NaN' ? 0 : number} onChange={e => changeNumber(e.target.value)} />

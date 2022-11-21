@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react'
 import Logo from '../img/logo.png';
 import './header.css'
 
-export default function Header({ currenciesData, numFixed }) {
+interface IHeader {
+    currenciesData: object | any;
+}
+
+
+export default function Header({ currenciesData }: IHeader) {
     const [uahEur, setUahEur] = useState(0)
     const { UAH: uanDollar } = currenciesData
 
     useEffect(() => {
         if (currenciesData.EUR) {
-            console.log(currenciesData);
-            console.log((1 * currenciesData["UAH"] / currenciesData["EUR"]));
             setUahEur(((1 * currenciesData["UAH"] / currenciesData["EUR"])))
-
         }
     }, [currenciesData]);
     return (
